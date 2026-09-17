@@ -945,7 +945,7 @@ div[data-testid="stVerticalBlock"] {{
     display: grid;
 
     grid-template-columns:
-        repeat(4, 1fr);
+        repeat(5, 1fr);
 
     gap: 12px;
 
@@ -1069,22 +1069,7 @@ div[data-testid="stVerticalBlock"] {{
 )
 
 
-# ============================================================
-# EXCEL-DATEI AUTOMATISCH LADEN
-# ============================================================
 
-EXCEL_FILE = "data/inventory.xlsx"
-
-try:
-    df = pd.read_excel(EXCEL_FILE)
-
-except FileNotFoundError:
-    st.error("Die Datei data/inventory.xlsx wurde nicht gefunden.")
-    st.stop()
-
-except Exception as e:
-    st.error(f"Fehler beim Laden der Excel-Datei: {e}")
-    st.stop()
 
 
 # ============================================================
@@ -1174,14 +1159,19 @@ total_positions = len(df)
 
 total_counted = (
     df["_status"]
+    .eq("counted, adjusted")
+    .sum()
+)
+total_in_progress = (
+    df["_status"]
     .eq("counted")
     .sum()
 )
 
-
 total_open = (
     total_positions
     - total_counted
+    - total_in_progress
 )
 
 
@@ -1791,7 +1781,7 @@ render_kpi(
 render_kpi(
     k3,
     "✓",
-    "Gezählt",
+    "Abgeschlossen",
     total_counted,
 )
 
@@ -1801,64 +1791,34 @@ render_kpi(
 
 render_kpi(
     k4,
-    "⌛︎",
+    "↻",
+    "In Arbeit",
+    total_in_progress,
+)
+render_kpi(
+    k5,
+   "◷",
     "Offen",
     total_open,
 )
-
 
 # ============================================================
 # FORTSCHRITT-KACHEL
 # Balken ist NUR HIER.
 # ============================================================
 
-with k5:
-
-    st.markdown(
-        f"""
-<div class="progress-kpi">
-
-<div class="progress-kpi-icon">
-▥
-</div>
-
-
-<div class="progress-kpi-content">
-
-<div class="progress-kpi-label">
-Fortschritt
-</div>
-
-
-<div class="progress-kpi-bottom">
-
-<div class="progress-kpi-track">
-
-<div
-    class="progress-kpi-fill"
-    style="
-        width:{total_percent}%;
-        background:{total_color};
-    "
->
-</div>
-
-</div>
-
-
-<div class="progress-kpi-number">
-{total_percent}%
-</div>
-
-
-</div>
-
-</div>
-
-</div>
-""",
-        unsafe_allow_html=True,
-    )
+st.markdown(
+    f'<div style="margin-top:8px;margin-bottom:14px;padding:10px 16px;">'
+    f'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">'
+    f'<span style="font-size:13px;font-weight:600;">Gesamtfortschritt</span>'
+    f'<span style="font-size:16px;font-weight:700;">{total_percent}%</span>'
+    f'</div>'
+    f'<div style="width:100%;height:8px;background:rgba(255,255,255,0.12);border-radius:999px;overflow:hidden;">'
+    f'<div style="width:{total_percent}%;height:100%;background:{total_color};border-radius:999px;"></div>'
+    f'</div>'
+    f'</div>',
+    unsafe_allow_html=True,
+)
 
 
 # ============================================================
@@ -1956,14 +1916,19 @@ for start in range(
 
         counted = (
             location_df["_status"]
+            .eq("counted, adjusted")
+            .sum()
+        )
+        in_progress = (
+            location_df["_status"]
             .eq("counted")
             .sum()
         )
 
-
         open_items = (
             positions
             - counted
+            - in_progress
         )
 
 
@@ -2081,7 +2046,7 @@ Positionen
 <div>
 
 <div class="location-label">
-Gezählt
+Abgeschlossen
 </div>
 
 <div class="location-value">
@@ -2090,7 +2055,17 @@ Gezählt
 
 </div>
 
+<div>
 
+<div class="location-label">
+In Arbeit
+</div>
+
+<div class="location-value">
+{in_progress}
+</div>
+
+</div>
 <div>
 
 <div class="location-label">
