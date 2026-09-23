@@ -1260,11 +1260,8 @@ date_text = (
 )
 
 
-update_text = (
-    now.strftime(
-        "%d.%m.%Y %H:%M"
-    )
-)
+
+
 
 
 # ============================================================
@@ -1624,63 +1621,25 @@ with date_col:
             </div>
 
 
-            <div class="clock-row">
-
-                <div class="clock-icon">
-                    ◷
-                </div>
-
-                <div id="live-clock">
-                    --:--:--
-                </div>
-
-            </div>
-
+           
 
             <div class="last-update">
 
                 <span class="last-update-title">
                     LETZTE AKTUALISIERUNG
                 </span>
+                {now.strftime("%H:%M Uhr")}
 
                 <br>
 
-                {update_text}
+                
 
             </div>
 
         </div>
 
 
-        <script>
-
-        function updateClock() {{
-
-            const now = new Date();
-
-            const hours =
-                String(now.getHours()).padStart(2, "0");
-
-            const minutes =
-                String(now.getMinutes()).padStart(2, "0");
-
-            const seconds =
-                String(now.getSeconds()).padStart(2, "0");
-
-            document.getElementById(
-                "live-clock"
-            ).textContent =
-                hours + ":" + minutes + ":" + seconds;
-        }}
-
-        updateClock();
-
-        setInterval(
-            updateClock,
-            1000
-        );
-
-        </script>
+        
 
     </body>
     </html>
