@@ -245,7 +245,7 @@ div[data-testid="stVerticalBlock"] {{
 ========================================================== */
 
 .top-card {{
-    height: 168px;
+    height: 120px;
 
     background:
         linear-gradient(
@@ -264,7 +264,7 @@ div[data-testid="stVerticalBlock"] {{
         inset 0 1px 0 rgba(255,255,255,0.035),
         0 8px 25px rgba(0,0,0,0.08);
 
-    padding: 18px 22px;
+    padding: 10px 18px;
 
     box-sizing: border-box;
 }}
@@ -282,7 +282,7 @@ div[data-testid="stVerticalBlock"] {{
 
     gap: 11px;
 
-    margin-bottom: 15px;
+    margin-bottom: 7px;
 }}
 
 .top-icon {{
@@ -343,7 +343,7 @@ div[data-testid="stVerticalBlock"] {{
 ========================================================== */
 
 .course-card {{
-    height: 168px;
+    height:120px;
 
     background:
         linear-gradient(
@@ -362,7 +362,7 @@ div[data-testid="stVerticalBlock"] {{
         inset 0 1px 0 rgba(255,255,255,0.035),
         0 8px 25px rgba(0,0,0,0.08);
 
-    padding: 13px 18px;
+    padding: 8px 18px;
 
     box-sizing: border-box;
 }}
@@ -413,7 +413,7 @@ div[data-testid="stVerticalBlock"] {{
 
     gap: 15px;
 
-    margin-top: 4px;
+    margin-top: -9px;
 }}
 
 .gauge {{
@@ -1510,7 +1510,7 @@ with date_col:
 
     .date-card {{
         width: 100%;
-        height: 168px;
+        height: 120px;
 
         background:
             linear-gradient(
@@ -1524,7 +1524,7 @@ with date_col:
 
         border-radius: 13px;
 
-        padding: 17px 22px;
+        padding: 10px 22px;
 
         color: #F7FBFF;
     }}
@@ -1647,7 +1647,7 @@ with date_col:
 
     components.html(
         clock_html,
-        height=168,
+        height=120,
         scrolling=False,
     )
 
@@ -2088,14 +2088,10 @@ st.markdown(
 
 <div>
 ◇ &nbsp;
-Werkslogistik
-&nbsp;&nbsp; | &nbsp;&nbsp;
+&nbsp;&nbsp;
 Inventur Fortschrittskontrolle
 </div>
 
-<div>
-Datenbasis: Excel Upload
-</div>
 
 </div>
 """,
