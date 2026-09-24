@@ -54,7 +54,7 @@ def progress_info(progress):
     progress ist ein Wert zwischen 0 und 1.
     """
 
-    if progress >= 0.90:
+    if progress >= 1.0:
         return GREEN, "Abgeschlossen"
 
     elif progress >= 0.50:
@@ -244,8 +244,7 @@ div[data-testid="stVerticalBlock"] {{
    STANDARD TOP CARD
 ========================================================== */
 
-.top-card {{
-    height: 120px;
+.top-card {{    height: 115px;
 
     background:
         linear-gradient(
@@ -254,45 +253,34 @@ div[data-testid="stVerticalBlock"] {{
             rgba(3, 48, 82, 0.84)
         );
 
-    border:
-        1px solid
-        {CARD_BORDER};
-
-    border-radius: 13px;
+    border: 1px solid rgba(126, 190, 232, 0.27);
+    border-radius: 11px;
 
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.035),
-        0 8px 25px rgba(0,0,0,0.08);
+        0 6px 18px rgba(0,0,0,0.07);
 
-    padding: 10px 18px;
-
+    padding: 9px 14px;
     box-sizing: border-box;
 }}
 
 .top-heading {{
-    color: {WHITE};
-
-    font-size: 20px;
-
-    font-weight: 800;
+    color: #F7FBFF;
+    font-size: 16px;
+    font-weight: 900;
 
     display: flex;
-
     align-items: center;
-
-    gap: 11px;
+    gap: 7px;
 
     margin-bottom: 7px;
 }}
-
 .top-icon {{
     color: {ICON};
-
-    font-size: 29px;
-
-    width: 34px;
+    font-size: 20px;
+    width: 20px;
+    line-height: 1;
 }}
-
 
 /* ==========================================================
    MITARBEITER
@@ -303,6 +291,7 @@ div[data-testid="stVerticalBlock"] {{
 
     grid-template-columns:
         repeat(4, 1fr);
+        transform: translateY(-4px);
 }}
 
 .employee-item {{
@@ -318,23 +307,18 @@ div[data-testid="stVerticalBlock"] {{
 }}
 
 .employee-label {{
-    color: {WHITE};
-
-    font-size: 16px;
-
+    color: #F7FBFF;
+    font-size: 12px;
     font-weight: 500;
 }}
 
+
 .employee-value {{
-    color: {WHITE};
-
-    font-size: 37px;
-
+    color: #F7FBFF;
+    font-size: 25px;
     font-weight: 850;
-
     line-height: 1;
-
-    margin-top: 7px;
+    margin-top: 4px;
 }}
 
 
@@ -343,7 +327,7 @@ div[data-testid="stVerticalBlock"] {{
 ========================================================== */
 
 .course-card {{
-    height:120px;
+    height: 115px;
 
     background:
         linear-gradient(
@@ -352,31 +336,27 @@ div[data-testid="stVerticalBlock"] {{
             rgba(3, 48, 82, 0.84)
         );
 
-    border:
-        1px solid
-        {CARD_BORDER};
-
-    border-radius: 13px;
+    border: 1px solid {CARD_BORDER};
+    border-radius: 11px;
 
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.035),
-        0 8px 25px rgba(0,0,0,0.08);
+        0 6px 18px rgba(0,0,0,0.07);
 
-    padding: 8px 18px;
-
+    padding: 9px 14px;
     box-sizing: border-box;
 }}
 
 .course-heading-row {{
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 7px;
 }}
 
 .course-icon {{
     color: {ICON};
 
-    font-size: 29px;
+    font-size: 20px;
 
     line-height: 1;
 }}
@@ -384,7 +364,7 @@ div[data-testid="stVerticalBlock"] {{
 .course-heading {{
     color: {WHITE};
 
-    font-size: 19px;
+    font-size: 15px;
 
     font-weight: 800;
 
@@ -394,9 +374,9 @@ div[data-testid="stVerticalBlock"] {{
 .course-subtitle {{
     color: {MUTED};
 
-    font-size: 12px;
+    font-size: 9px;
 
-    margin-top: 3px;
+    margin-top: 2px;
 }}
 
 
@@ -411,17 +391,17 @@ div[data-testid="stVerticalBlock"] {{
 
     align-items: flex-end;
 
-    gap: 15px;
+    gap: 10px;
 
-    margin-top: -9px;
+    margin-top: 2px;
 }}
 
 .gauge {{
     position: relative;
 
-    width: 170px;
+    width: 120px;
 
-    height: 86px;
+    height: 58px;
 
     overflow: hidden;
 }}
@@ -429,9 +409,9 @@ div[data-testid="stVerticalBlock"] {{
 .gauge-outer {{
     position: absolute;
 
-    width: 170px;
+    width: 120px;
 
-    height: 170px;
+    height: 120px;
 
     border-radius: 50%;
 
@@ -453,13 +433,13 @@ div[data-testid="stVerticalBlock"] {{
 .gauge-inner {{
     position: absolute;
 
-    width: 124px;
+    width: 86px;
 
-    height: 124px;
+    height: 86px;
 
-    left: 23px;
+    left: 17px;
 
-    top: 23px;
+    top: 17px;
 
     border-radius: 50%;
 
@@ -469,13 +449,13 @@ div[data-testid="stVerticalBlock"] {{
 .gauge-needle {{
     position: absolute;
 
-    left: 82px;
+    left: 58px;
 
     bottom: 0;
 
-    width: 5px;
+    width: 4px;
 
-    height: 67px;
+    height: 46px;
 
     background: {WHITE};
 
@@ -487,13 +467,13 @@ div[data-testid="stVerticalBlock"] {{
 .gauge-center {{
     position: absolute;
 
-    left: 76px;
+    left: 54px;
 
-    bottom: -7px;
+    bottom: -5px;
 
-    width: 17px;
+    width: 12px;
 
-    height: 17px;
+    height: 12px;
 
     background: {WHITE};
 
@@ -507,13 +487,13 @@ div[data-testid="stVerticalBlock"] {{
 
     right: 0;
 
-    bottom: 5px;
+    bottom: 3px;
 
     text-align: center;
 
     color: {WHITE};
 
-    font-size: 27px;
+    font-size: 19px;
 
     font-weight: 900;
 }}
@@ -869,7 +849,8 @@ div[data-testid="stVerticalBlock"] {{
 ========================================================== */
 
 .location-card {{
-    min-height: 137px;
+    height: 112px;
+    min-height: 112px;
 
     background:
         linear-gradient(
@@ -885,77 +866,64 @@ div[data-testid="stVerticalBlock"] {{
     border-radius: 11px;
 
     padding:
-        11px
-        15px
+        8px
         12px
-        15px;
+        8px
+        12px;
 
     box-sizing: border-box;
 
-    margin-bottom: 6px;
+    margin-bottom: 30px;
 }}
 
 .location-header {{
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
-
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }}
 
 .location-name {{
     color: {WHITE};
-
-    font-size: 24px;
-
+    font-size: 18px;
     font-weight: 900;
 
     display: flex;
-
     align-items: center;
-
-    gap: 9px;
+    gap: 6px;
 }}
 
 .location-pin {{
     color: {ICON};
-
-    font-size: 25px;
+    font-size: 18px;
 }}
 
 .status-badge {{
     border: 2px solid;
-
     border-radius: 999px;
 
-    padding:
-        4px
-        13px;
+    padding: 3px 10px;
 
-    font-size: 13px;
-
+    font-size: 11px;
     font-weight: 850;
-
     line-height: 1;
 }}
 
 .location-grid {{
     display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
 
-    grid-template-columns:
-        repeat(5, 1fr);
+    margin-bottom: 5px;
 
-    gap: 12px;
-
-    margin-bottom: 11px;
+    position: relative;
+    top: -10px;
 }}
 
 .location-label {{
     color: {MUTED};
 
-    font-size: 13px;
+    font-size: 11px;
 
     font-weight: 500;
 }}
@@ -963,13 +931,13 @@ div[data-testid="stVerticalBlock"] {{
 .location-value {{
     color: {WHITE};
 
-    font-size: 23px;
+    font-size: 18px;
 
     font-weight: 900;
 
     line-height: 1;
 
-    margin-top: 4px;
+    margin-top: 2px;
 }}
 
 .location-progress-row {{
@@ -977,7 +945,9 @@ div[data-testid="stVerticalBlock"] {{
 
     align-items: center;
 
-    gap: 12px;
+    gap: 8px;
+    position: relative;
+    top: -12px;
 }}
 
 .location-progress-track {{
@@ -1194,9 +1164,12 @@ total_color, total_status = (
 )
 
 
-total_percent = round(
-    total_progress * 100
-)
+total_percent = total_progress * 100
+
+if total_progress < 1.0:
+    total_percent_text = f"{total_percent:.1f}%"
+else:
+    total_percent_text = "100%"
 
 
 # ============================================================
@@ -1454,7 +1427,7 @@ Gesamtfortschritt
 </div>
 
 <div class="gauge-value">
-{total_percent}%
+{total_percent_text}
 </div>
 
 </div>
@@ -1509,47 +1482,47 @@ with date_col:
     }}
 
     .date-card {{
-        width: 100%;
-        height: 120px;
+    width: 100%;
+    height: 115px;
 
-        background:
-            linear-gradient(
-                145deg,
-                rgba(6, 77, 126, 0.76),
-                rgba(3, 48, 82, 0.84)
-            );
+    background:
+        linear-gradient(
+            145deg,
+            rgba(6, 77, 126, 0.76),
+            rgba(3, 48, 82, 0.84)
+        );
 
-        border:
-            1px solid rgba(126, 190, 232, 0.27);
+    border:
+        1px solid rgba(126, 190, 232, 0.27);
 
-        border-radius: 13px;
+    border-radius: 11px;
 
-        padding: 10px 22px;
+    padding: 10px 16px;
 
-        color: #F7FBFF;
-    }}
+    color: #F7FBFF;
+}}
 
     .date-header {{
         display: flex;
         align-items: center;
-        gap: 11px;
+        gap: 7px;
 
-        font-size: 18px;
+        font-size: 15px;
         font-weight: 800;
     }}
 
     .calendar-icon {{
         color: #D8EAF8;
-        font-size: 25px;
-        width: 29px;
+        font-size: 20px;
+        width: 23px;
         text-align: center;
     }}
 
     .date-value {{
-        margin-left: 40px;
+        margin-left: 30px;
         margin-top: 2px;
 
-        font-size: 17px;
+        font-size: 13px;
         font-weight: 700;
     }}
 
@@ -1582,12 +1555,12 @@ with date_col:
     }}
 
     .last-update {{
-        margin-left: 41px;
+        margin-left: 30px;
         margin-top: 6px;
 
         color: #B9CDDC;
 
-        font-size: 10px;
+        font-size: 9px;
         line-height: 1.35;
     }}
 
@@ -1647,7 +1620,7 @@ with date_col:
 
     components.html(
         clock_html,
-        height=120,
+        height=115,
         scrolling=False,
     )
 
@@ -1770,7 +1743,7 @@ st.markdown(
     f'<div style="margin-top:8px;margin-bottom:14px;padding:10px 16px;">'
     f'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">'
     f'<span style="font-size:13px;font-weight:600;">Gesamtfortschritt</span>'
-    f'<span style="font-size:16px;font-weight:700;">{total_percent}%</span>'
+    f'<span style="font-size:16px;font-weight:700;">{total_percent:.1f}%</span>'
     f'</div>'
     f'<div style="width:100%;height:8px;background:rgba(255,255,255,0.12);border-radius:999px;overflow:hidden;">'
     f'<div style="width:{total_percent}%;height:100%;background:{total_color};border-radius:999px;"></div>'
@@ -1892,28 +1865,25 @@ for start in range(
 
 
         if positions > 0:
-
             progress = (
                 counted
                 / positions
             )
-
         else:
-
             progress = 0
 
+        percent = progress * 100
 
-        percent = round(
-            progress * 100
-        )
-
+        if progress < 1.0:
+            percent_text = f"{percent:.1f}%"
+        else:
+            percent_text = "100%"
 
         color, status = (
             progress_info(
                 progress
             )
         )
-
 
         location_name = html.escape(
             clean_location(
@@ -2059,7 +2029,7 @@ Offen
 
 
 <div class="location-progress-value">
-{percent}%
+{percent_text}
 </div>
 
 
