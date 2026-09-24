@@ -88,7 +88,12 @@ def sort_location(value):
 st.markdown(
     f"""
 <style>
-
+[data-testid="stStatusWidget"],
+[data-testid="stToolbar"],
+.viewerBadge_container__1QSob,
+.viewerBadge_link__1S137 {{
+    display: none !important;
+}}
 /* ==========================================================
    STREAMLIT GRUNDLAYOUT
 ========================================================== */

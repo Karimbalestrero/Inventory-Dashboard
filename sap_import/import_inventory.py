@@ -317,13 +317,18 @@ def process_export(export_file):
     # --------------------------------------------------------
     # GITHUB AUTOMATISCH AKTUALISIEREN
     # --------------------------------------------------------
-    print("Erstelle aktuellen Dashboard-Screenshot...")
-    subprocess.run(
-        ["py", "screenshot.py"],
-        cwd=str(BASE_DIR),
-        check=False,
-    )
+   
     github_ok = push_inventory_to_github()
+    if github_ok:
+        print("Warte auf Aktualisierung des Online-Dashboards...")
+        time.sleep(30)
+
+        print("Erstelle aktuellen Dashboard-Screenshot...")
+        subprocess.run(
+            ["py", "screenshot.py"],
+            cwd=str(BASE_DIR),
+            check=False,
+        )
 
     if github_ok:
         print("Streamlit-Daten wurden an GitHub übertragen.")

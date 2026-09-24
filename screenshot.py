@@ -27,6 +27,19 @@ with sync_playwright() as p:
         wait_until="networkidle",
         timeout=120000,
     )
+    page.add_style_tag(content="""
+        [data-testid="stStatusWidget"],
+        [data-testid="stAppDeployButton"],
+        [data-testid="stToolbar"],
+        [data-testid="stDecoration"],
+        [data-testid="stMainMenu"],
+        footer {
+            display: none !important;
+            visibility: hidden !important;
+        }
+    """)
+
+    page.mouse.move(10, 10)
 
     page.screenshot(
         path=str(OUTPUT_FILE),
