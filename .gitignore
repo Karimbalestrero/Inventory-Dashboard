@@ -2,3 +2,7 @@
 __pycache__/
 *.pyc
 data/inventory.xlsx
+dashboard_output/
+data/screenshot.py
+sap_import/incoming/
+sap_import/processed/
