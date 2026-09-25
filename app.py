@@ -424,14 +424,14 @@ div[data-testid="stVerticalBlock"] {{
         conic-gradient(
             from 270deg,
 
-            {RED} 0deg 30deg,
+            {RED} 0deg 60deg,
 
-            {YELLOW} 30deg 64deg,
+            {YELLOW} 60deg 128deg,
 
-            {GREEN} 64deg 90deg,
+            {GREEN} 128deg 180deg,
 
             rgba(35, 110, 150, 0.46)
-            90deg 360deg
+            180deg 360deg
         );
 }}
 
