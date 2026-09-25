@@ -907,13 +907,20 @@ div[data-testid="stVerticalBlock"] {{
     border: 2px solid;
     border-radius: 999px;
 
-    padding: 3px 10px;
+    padding: 2px 6px;
 
-    font-size: 11px;
+    font-size: 14px;
     font-weight: 850;
     line-height: 1;
+    hight: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }}
-
+.status-content {{
+    display: inline-block;
+    transform: translateY(7px);
+}}
 .location-grid {{
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -1938,9 +1945,7 @@ for start in range(
     "
 >
 
-{status_symbol}
-&nbsp;
-{status}
+<span class="status-content">{status_symbol} {status}</span>
 
 </div>
 
