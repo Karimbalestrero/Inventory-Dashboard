@@ -4,6 +4,7 @@ from datetime import datetime
 import html
 import streamlit.components.v1 as components
 from streamlit_autorefresh import st_autorefresh
+from datetime import datetime, timedelta
 
 # ============================================================
 # SEITENKONFIGURATION
@@ -26,10 +27,10 @@ st_autorefresh(
 # ============================================================
 
 EMPLOYEES = {
-    "NA": 10,
-    "NB": 39,
-    "ND": 30,
-    "PCBA": 13,
+    "NA": 15,
+    "NB": 33,
+    "ND": 37,
+    "PCBA": 8,
 }
 
 BLUE = "#004696"
@@ -49,17 +50,50 @@ CARD_BORDER = "rgba(126, 190, 232, 0.27)"
 # HILFSFUNKTIONEN
 # ============================================================
 
-def progress_info(progress):
+def progress_info(progress, now=None):
     """
-    progress ist ein Wert zwischen 0 und 1.
+    Bewertet den Fortschritt relativ zum Zeitplan.
+    Inventur: 02.10.2026, 07:00 - 14:00 Uhr
     """
 
+    from datetime import datetime
+
+    if now is None:
+        now = datetime.now()
+
+    start = datetime(2026, 10, 2, 7, 0)
+    target_end = datetime(2026, 10, 2, 14, 0)
+
+    # Komplett fertig
     if progress >= 1.0:
         return GREEN, "Abgeschlossen"
 
-    elif progress >= 0.50:
+    # Vor Inventurbeginn noch keine Bewertung
+    if now <= start:
+       if progress <= 0:
+        return GREEN, "Start"
+    else:
         return YELLOW, "Im Plan"
 
+    # Erwarteter Fortschritt anhand der vergangenen Zeit
+    total_seconds = (target_end - start).total_seconds()
+    elapsed_seconds = (now - start).total_seconds()
+
+    expected_progress = elapsed_seconds / total_seconds
+    expected_progress = max(0.0, min(expected_progress, 1.0))
+
+    # Differenz zum Soll
+    difference = progress - expected_progress
+
+    # Mindestens im bzw. nahe am Zeitplan
+    if difference >= -0.10:
+        return YELLOW, "Im Plan"
+
+    # 10-20 Prozentpunkte hinter Soll
+    elif difference >= -0.20:
+        return YELLOW, "Beobachten"
+
+    # Mehr als 20 Prozentpunkte hinter Soll
     else:
         return RED, "Kritisch"
 
@@ -203,10 +237,90 @@ div[data-testid="stVerticalBlock"] {{
     gap: 22px;
 }}
 
-.hero-cube {{
-    font-size: 63px;
-    color: {ICON};
-    line-height: 1;
+.inv-cube-scene {{
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    perspective: 500px;
+}}
+
+.inv-cube {{
+    position: relative;
+    width: 54px;
+    height: 54px;
+
+    transform-style: preserve-3d;
+    transform: rotateX(-25deg) rotateY(38deg);
+}}
+
+.inv-face {{
+    position: absolute;
+    width: 54px;
+    height: 54px;
+
+    top: 0;
+    left: 0;
+
+    border: 1px solid rgba(120,235,255,0.38);
+    box-sizing: border-box;
+
+    backface-visibility: hidden;
+}}
+
+/* SICHTBARE RECHTE FLÄCHE */
+.inv-front {{
+    transform: translateZ(27px);
+
+    background: linear-gradient(
+        145deg,
+        #52F0B5 0%,
+        #24D9C0 48%,
+        #08AFC7 100%
+    );
+
+    box-shadow:
+        inset 5px 5px 10px rgba(255,255,255,0.16),
+        inset -5px -5px 12px rgba(0,60,100,0.18);
+}}
+
+/* OBERSEITE */
+.inv-top {{
+    transform: rotateX(90deg) translateZ(27px);
+
+    background: linear-gradient(
+        135deg,
+        #D8FF63 0%,
+        #A8F45D 45%,
+        #64E879 100%
+    );
+
+    box-shadow:
+        inset 0 0 10px rgba(255,255,255,0.20);
+}}
+
+/* SICHTBARE LINKE FLÄCHE */
+.inv-left {{
+    transform: rotateY(-90deg) translateZ(27px);
+
+    background: linear-gradient(
+        135deg,
+        #42DFFF 0%,
+        #16BFE8 48%,
+        #087DBD 100%
+    );
+
+    box-shadow:
+        inset 5px 5px 10px rgba(255,255,255,0.14);
+}}
+
+.inv-back {{
+    transform: rotateY(180deg) translateZ(27px);
+    background: #0066B8;
 }}
 
 .hero-text {{
@@ -637,9 +751,14 @@ div[data-testid="stVerticalBlock"] {{
 }}
 
 .section-heading-icon {{
-    color: {ICON};
+    color: #25DFFF;
 
     font-size: 27px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transform: translateY(-7px)
 }}
 
 
@@ -675,15 +794,22 @@ div[data-testid="stVerticalBlock"] {{
 }}
 
 .kpi-icon {{
-    width: 53px;
+    width: 58px;
+    min-width: 58px;
 
-    color: {ICON};
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    font-size: 43px;
-
-    text-align: center;
-
+    font-size: 44px;
+    font-weight: 700;
     line-height: 1;
+
+    color: #25DFFF;
+
+    text-shadow:
+        0 0 6px rgba(37, 223, 255, 0.55),
+        0 0 14px rgba(0, 170, 255, 0.25);
 }}
 
 .kpi-content {{
@@ -832,14 +958,23 @@ div[data-testid="stVerticalBlock"] {{
     color: {WHITE};
 
     font-size: 26px;
+    line-height: 1;
 
     font-weight: 900;
 }}
 
 .storage-title-icon {{
-    color: {ICON};
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-8px);
 
-    font-size: 32px;
+    color: #76F59A;
+
+    filter:
+        drop-shadow(0 0 5px rgba(118, 245, 154, 0.35));
+
+    margin-right: 12px;
 }}
 
 .storage-count {{
@@ -889,18 +1024,25 @@ div[data-testid="stVerticalBlock"] {{
 }}
 
 .location-name {{
-    color: {WHITE};
-    font-size: 18px;
-    font-weight: 900;
-
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 12px;
 }}
 
 .location-pin {{
-    color: {ICON};
-    font-size: 18px;
+    width: 24px;
+    min-width: 24px;
+    height: 24px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #76F59A;
+
+    filter: drop-shadow(
+        0 0 5px rgba(118, 245, 154, 0.30)
+    );
 }}
 
 .status-badge {{
@@ -1168,13 +1310,49 @@ else:
 
     total_progress = 0
 
+# Geschätzte Endzeit der Inventur
+forecast_start = datetime(2026, 10, 2, 7, 0)
+forecast_now = datetime.now()
+
+if total_progress >= 1.0:
+    forecast_text = "Fertig"
+
+elif forecast_now <= forecast_start:
+    forecast_text = "Prognose ab 07:00"
+
+elif total_progress > 0:
+    elapsed_seconds = (
+        forecast_now - forecast_start
+    ).total_seconds()
+
+    estimated_total_seconds = (
+        elapsed_seconds / total_progress
+    )
+
+    estimated_end = (
+        forecast_start
+        + timedelta(seconds=estimated_total_seconds)
+    )
+
+    forecast_text = (
+        f"Prognose Ende: {estimated_end:%H:%M} Uhr"
+    )
+
+else:
+    forecast_text = "Noch keine Prognose"
 
 total_color, total_status = (
     progress_info(
         total_progress
     )
 )
-
+# Eigene Farbe nur für die Auf-Kurs-Anzeige
+if total_status in ("Abgeschlossen", "Start", "Im Plan"):
+    gauge_status_color = GREEN
+elif total_status == "Beobachten":
+    gauge_status_color = YELLOW
+else:
+    gauge_status_color = RED
 
 total_percent = total_progress * 100
 
@@ -1271,8 +1449,15 @@ with title_col:
 
 <div class="hero-inner">
 
-<div class="hero-cube">
-◇
+<div class="inv-cube-scene">
+    <div class="inv-cube">
+        <div class="inv-face inv-front"></div>
+        <div class="inv-face inv-back"></div>
+        <div class="inv-face inv-right"></div>
+        <div class="inv-face inv-left"></div>
+        <div class="inv-face inv-top"></div>
+        <div class="inv-face inv-bottom"></div>
+    </div>
 </div>
 
 <div class="hero-text">
@@ -1448,13 +1633,23 @@ Gesamtfortschritt
 <div
     class="gauge-status"
     style="
-        color:{total_color};
-        border-color:{total_color};
+        color:{gauge_status_color};
+        border-color:{gauge_status_color};
     "
 >
-{total_status}
+{"Auf Kurs" if total_status == "Im Plan" else total_status}
 </div>
-
+<div style="
+    position: absolute;
+    top: 8px;
+    right: 14px;
+    font-size: 13px;
+    font-weight: 800;
+    color: {WHITE};
+    white-space: nowrap;
+">
+    {forecast_text}
+</div>
 
 </div>
 
@@ -1713,14 +1908,12 @@ render_kpi(
     total_documents,
 )
 
-
 render_kpi(
     k2,
     "◇",
     "Positionen",
     total_positions,
 )
-
 
 render_kpi(
     k3,
@@ -1729,19 +1922,16 @@ render_kpi(
     total_counted,
 )
 
-
-# Sanduhr bewusst als neutrales Textsymbol,
-# damit sie NICHT gelb als Emoji dargestellt wird.
-
 render_kpi(
     k4,
     "↻",
     "In Arbeit",
     total_in_progress,
 )
+
 render_kpi(
     k5,
-   "◷",
+    "◷",
     "Offen",
     total_open,
 )
@@ -1789,13 +1979,25 @@ st.markdown(
 <div class="storage-title">
 
 <span class="storage-title-icon">
-⌖
+<svg viewBox="0 0 24 24"
+width="28"
+height="28"
+fill="none"
+stroke="currentColor"
+stroke-width="1.8"
+stroke-linecap="round"
+stroke-linejoin="round">
+
+<path d="M3 10L12 4L21 10" />
+<path d="M5 9V20H19V9" />
+<path d="M8 20V13H16V20" />
+<path d="M8 16H16" />
+</svg>
 </span>
 
 Storage Locations
 
 </div>
-
 
 <div class="storage-count">
 {number_locations} Storage Locations
@@ -1905,149 +2107,149 @@ for start in range(
 
 
         # Status-Symbol
-
-        if progress >= 0.90:
-
+        if status == "Abgeschlossen":
             status_symbol = "✓"
 
-        elif progress >= 0.50:
+        elif status == "Im Plan":
+            status_symbol = "✓"
 
+        elif status == "Start":
+            status_symbol = "○"
+
+        elif status == "Beobachten":
             status_symbol = "≈"
 
         else:
-
             status_symbol = "!"
 
 
         card_html = f"""
-<div class="location-card">
+        <div class="location-card">
 
 
-<div class="location-header">
+        <div class="location-header">
 
 
-<div class="location-name">
+        <div class="location-name">
 
-<span class="location-pin">
-⌖
-</span>
+        <span class="location-pin"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10L12 4L21 10"/><path d="M5 9V20H19V9"/><path d="M8 20V13H16V20"/><path d="M8 16H16"/></svg></span>
 
-{location_name}
+        {location_name}
 
-</div>
+        </div>
 
 
-<div
-    class="status-badge"
-    style="
-        color:{color};
-        border-color:{color};
-    "
->
+        <div
+            class="status-badge"
+            style="
+                color:{color};
+                border-color:{color};
+            "
+        >
 
-<span class="status-content">{status_symbol} {status}</span>
+        <span class="status-content">{status_symbol} {status}</span>
 
-</div>
-
-
-</div>
+        </div>
 
 
-<div class="location-grid">
+        </div>
 
 
-<div>
-
-<div class="location-label">
-Dokumente
-</div>
-
-<div class="location-value">
-{documents}
-</div>
-
-</div>
+        <div class="location-grid">
 
 
-<div>
+        <div>
 
-<div class="location-label">
-Positionen
-</div>
+        <div class="location-label">
+        Dokumente
+        </div>
 
-<div class="location-value">
-{positions}
-</div>
+        <div class="location-value">
+        {documents}
+        </div>
 
-</div>
-
-
-<div>
-
-<div class="location-label">
-Abgeschlossen
-</div>
-
-<div class="location-value">
-{counted}
-</div>
-
-</div>
-
-<div>
-
-<div class="location-label">
-In Arbeit
-</div>
-
-<div class="location-value">
-{in_progress}
-</div>
-
-</div>
-<div>
-
-<div class="location-label">
-Offen
-</div>
-
-<div class="location-value">
-{open_items}
-</div>
-
-</div>
+        </div>
 
 
-</div>
+        <div>
+
+        <div class="location-label">
+        Positionen
+        </div>
+
+        <div class="location-value">
+        {positions}
+        </div>
+
+        </div>
 
 
-<div class="location-progress-row">
+        <div>
+
+        <div class="location-label">
+        Abgeschlossen
+        </div>
+
+        <div class="location-value">
+        {counted}
+        </div>
+
+        </div>
+
+        <div>
+
+        <div class="location-label">
+        In Arbeit
+        </div>
+
+        <div class="location-value">
+        {in_progress}
+        </div>
+
+        </div>
+        <div>
+
+        <div class="location-label">
+        Offen
+        </div>
+
+        <div class="location-value">
+        {open_items}
+        </div>
+
+        </div>
 
 
-<div class="location-progress-track">
-
-<div
-    class="location-progress-fill"
-    style="
-        width:{percent}%;
-        background:{color};
-    "
->
-</div>
-
-</div>
+        </div>
 
 
-<div class="location-progress-value">
-{percent_text}
-</div>
+        <div class="location-progress-row">
 
 
-</div>
+        <div class="location-progress-track">
+
+        <div
+            class="location-progress-fill"
+            style="
+                width:{percent}%;
+                background:{color};
+            "
+        >
+        </div>
+
+        </div>
 
 
-</div>
-"""
+        <div class="location-progress-value">
+        {percent_text}
+        </div>
+
+
+        </div>
+
+
+        </div>
+        """
 
 
         with column:
@@ -2055,7 +2257,7 @@ Offen
             st.markdown(
                 card_html,
                 unsafe_allow_html=True,
-            )
+        )
 
 
 # ============================================================
