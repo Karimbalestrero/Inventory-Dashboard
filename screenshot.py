@@ -36,17 +36,17 @@ with sync_playwright() as p:
 )
 
 page.wait_for_timeout(5000)
-    page.add_style_tag(content="""
-        [data-testid="stStatusWidget"],
-        [data-testid="stAppDeployButton"],
-        [data-testid="stToolbar"],
-        [data-testid="stDecoration"],
-        [data-testid="stMainMenu"],
-        footer {
-            display: none !important;
-            visibility: hidden !important;
-        }
-    """)
+page.add_style_tag(content="""
+    [data-testid="stStatusWidget"],
+    [data-testid="stAppDeployButton"],
+    [data-testid="stToolbar"],
+    [data-testid="stDecoration"],
+    [data-testid="stMainMenu"],
+    footer {
+        display: none !important;
+        visibility: hidden !important;
+    }
+""")
 
     page.mouse.move(10, 10)
 
