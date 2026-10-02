@@ -37,25 +37,25 @@ with sync_playwright() as p:
 
 page.wait_for_timeout(5000)
 page.add_style_tag(content="""
-    [data-testid="stStatusWidget"],
-    [data-testid="stAppDeployButton"],
-    [data-testid="stToolbar"],
-    [data-testid="stDecoration"],
-    [data-testid="stMainMenu"],
-    footer {
-        display: none !important;
-        visibility: hidden !important;
-    }
+[data-testid="stStatusWidget"],
+[data-testid="stAppDeployButton"],
+[data-testid="stToolbar"],
+[data-testid="stDecoration"],
+[data-testid="stMainMenu"],
+footer {
+    display: none !important;
+    visibility: hidden !important;
+}
 """)
 
-    page.mouse.move(10, 10)
+page.mouse.move(10, 10)
 
-    page.screenshot(
-        path=str(OUTPUT_FILE),
-        full_page=True,
-    )
+page.screenshot(
+    path=str(OUTPUT_FILE),
+    full_page=True,
+)
 
-    browser.close()
+browser.close()
 
 
 print(f"Screenshot erstellt: {OUTPUT_FILE}")
