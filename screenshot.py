@@ -1,5 +1,5 @@
 from pathlib import Path
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
 
 
 DASHBOARD_URL = "https://inventory-dashboard-nyy97sztrt6ndzc8nj5dhd.streamlit.app/"
@@ -22,18 +22,29 @@ with sync_playwright() as p:
         }
     )
 
-    page.goto(
-        DASHBOARD_URL,
-        wait_until="networkidle",
-        timeout=120000,
-    )
-    page.get_by_text(
-    "Gesamtübersicht",
-    exact=True,
-).wait_for(
-    state="visible",
-    timeout=120000,
-)
+    for attempt in range(6):
+    try:
+        page.goto(
+            DASHBOARD_URL,
+            wait_until="domcontentloaded",
+            timeout=120000,
+        )
+
+        page.get_by_text(
+            "Gesamtübersicht",
+            exact=True,
+        ).wait_for(
+            state="visible",
+            timeout=60000,
+        )
+
+        break
+
+    except PlaywrightTimeoutError:
+        if attempt == 5:
+            raise
+
+        page.wait_for_timeout(10000)
 
 page.wait_for_timeout(5000)
 page.add_style_tag(content="""
