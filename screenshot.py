@@ -27,6 +27,15 @@ with sync_playwright() as p:
         wait_until="networkidle",
         timeout=120000,
     )
+    page.get_by_text(
+    "Gesamtübersicht",
+    exact=True,
+).wait_for(
+    state="visible",
+    timeout=120000,
+)
+
+page.wait_for_timeout(5000)
     page.add_style_tag(content="""
         [data-testid="stStatusWidget"],
         [data-testid="stAppDeployButton"],
