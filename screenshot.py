@@ -13,7 +13,10 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 with sync_playwright() as p:
 
-    browser = p.chromium.launch(channel="msedge", headless=True)
+    browser = p.chromium.launch(
+        channel="msedge",
+        headless=True
+    )
 
     page = browser.new_page(
         viewport={
@@ -23,31 +26,33 @@ with sync_playwright() as p:
     )
 
     for attempt in range(6):
-    try:
-        page.goto(
-            DASHBOARD_URL,
-            wait_until="domcontentloaded",
-            timeout=120000,
-        )
 
-        page.get_by_text(
-            "Gesamtübersicht",
-            exact=True,
-        ).wait_for(
-            state="visible",
-            timeout=60000,
-        )
+        try:
+            page.goto(
+                DASHBOARD_URL,
+                wait_until="domcontentloaded",
+                timeout=120000,
+            )
 
-        break
+            page.get_by_text(
+                "Gesamtübersicht",
+                exact=True,
+            ).wait_for(
+                state="visible",
+                timeout=60000,
+            )
 
-    except PlaywrightTimeoutError:
-        if attempt == 5:
-            raise
+            break
 
-        page.wait_for_timeout(10000)
+        except PlaywrightTimeoutError:
 
-page.wait_for_timeout(5000)
-page.add_style_tag(content="""
+            if attempt == 5:
+                raise
+
+            page.wait_for_timeout(10000)
+
+    page.add_style_tag(
+    content="""
 [data-testid="stStatusWidget"],
 [data-testid="stAppDeployButton"],
 [data-testid="stToolbar"],
@@ -57,16 +62,5 @@ footer {
     display: none !important;
     visibility: hidden !important;
 }
-""")
-
-page.mouse.move(10, 10)
-
-page.screenshot(
-    path=str(OUTPUT_FILE),
-    full_page=True,
+"""
 )
-
-browser.close()
-
-
-print(f"Screenshot erstellt: {OUTPUT_FILE}")
